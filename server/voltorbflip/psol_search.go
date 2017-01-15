@@ -101,14 +101,3 @@ func (psol vfPartialSolution) SafestUnsolvedPosition() (bool, bool, VfBoardPosit
 
 	return true, false, safestPosition, (float32(safestNumberOfPossibilities) / float32(numberOfPossibilities))
 }
-
-func (psol vfPartialSolution) safetyOfGuess(position VfBoardPosition, solvedBoards *map[VfSolvedBoard]float32) float32 {
-	safety := float32(0)
-	for board, probability := range *solvedBoards {
-		if board[position.Y][position.X] != 0 {
-			safety += probability
-		}
-	}
-	return safety
-}
-

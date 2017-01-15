@@ -150,11 +150,7 @@ func newVfPartialSolution(board *VfBoardTotals, psolBoard VfPSolBoard) (bool, vf
 
 	isPossible := result.applyHeuristics()
 
-	if isPossible {
-		return true, result
-	}
-
-	return false, result
+	return isPossible, result
 }
 
 func (psol vfPartialSolution) IsSolved() bool {
