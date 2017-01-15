@@ -1,0 +1,13 @@
+# Build settings
+markdown: kramdown
+gems: []
+exclude:
+  - Gemfile
+  - Gemfile.lock
+
+ga_tracking_id: UA-90395408-1
+title: VoltorbFlip.com - The Best Calculator and Solver
+heading: VoltorbFlip.com
+social_media_links:
+  twitter: https://twitter.com/realmrtenda
+  github: https://github.com/mrtenda/voltorbflipdotcom

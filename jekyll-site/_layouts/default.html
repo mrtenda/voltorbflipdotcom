@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>{{site.title}}</title>
+    <meta name="description" content="The best online Voltorb Flip calculator and solver. Instantly get the answer to any Voltorb Flip puzzle from Pokemon Heart Gold and Soul Silver." />
+
+    <link rel="stylesheet" type="text/css" href="assets/style.css"/>
+    <link rel="shortcut icon" href="/favicon.ico?" type="image/x-icon">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  </head>
+
+  <body>
+    <div class="container">
+      <div class="content">
+
+    <div id="social-media">
+      <a href="{{site.social_media_links.twitter}}"><img class="social-media-icon" src="assets/images/twitter-48x48.png"></a>
+      <a href="{{site.social_media_links.github}}"><img class="social-media-icon" src="assets/images/github-48x48.png"></a>
+    </div>
+
+    <h1>{{site.heading}}</h1>
+
+{{content}}
+
+      </div>
+    </div>
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', '{{site.ga_tracking_id}}', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+  </body>
+
+</html>
