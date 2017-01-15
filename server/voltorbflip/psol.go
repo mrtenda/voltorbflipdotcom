@@ -102,7 +102,7 @@ func (lineData vfPSolLineData) IsPossible() bool {
 		(lineData.RemainingVoltorbs >= 0) &&
 		(lineData.NumUnsolvedTiles >= 0) &&
 		(lineData.RemainingVoltorbs <= lineData.NumUnsolvedTiles) &&
-		((lineData.NumUnsolvedTiles - lineData.RemainingVoltorbs) * 3 >= lineData.RemainingPoints))
+		((lineData.NumUnsolvedTiles-lineData.RemainingVoltorbs)*3 >= lineData.RemainingPoints))
 }
 
 func (lineData vfPSolLineData) String() string {

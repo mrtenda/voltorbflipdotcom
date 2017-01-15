@@ -17,7 +17,7 @@ func (psol vfPartialSolution) AllPossibleSolvedBoards() (map[VfSolvedBoard]int, 
 	for len(psolStack) != 0 {
 		currentPsol, psolStack = psolStack[len(psolStack)-1], psolStack[:len(psolStack)-1]
 
-		OUTER:
+	OUTER:
 		for y, row := range currentPsol.tiles {
 			for x, tile := range row {
 				if !tile.IsSolved() {
@@ -57,7 +57,7 @@ func (psol vfPartialSolution) SafetyOfEachGuess() (map[VfBoardPosition]int, int)
 						safeCount += count
 					}
 				}
-				result[VfBoardPosition{x,y}] += safeCount
+				result[VfBoardPosition{x, y}] += safeCount
 			}
 		}
 	}

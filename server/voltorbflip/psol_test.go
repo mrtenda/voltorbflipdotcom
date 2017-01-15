@@ -1,9 +1,9 @@
 package voltorbflip
 
 import (
+	. "github.com/smartystreets/goconvey/convey"
 	"github.com/stretchr/testify/assert"
 	"testing"
-	. "github.com/smartystreets/goconvey/convey"
 )
 
 func TestVfPSolTile_IsSolved(t *testing.T) {
@@ -57,11 +57,11 @@ func NewSolvedPsol() (vfPartialSolution, VfSolvedBoard) {
 	psol.updateInvertedTilesFromTiles()
 
 	expectedSolvedBoard := VfSolvedBoard{
-		{3,2,1,1,0},
-		{0,3,1,1,0},
-		{1,0,1,1,1},
-		{1,0,1,1,1},
-		{0,2,1,1,1},
+		{3, 2, 1, 1, 0},
+		{0, 3, 1, 1, 0},
+		{1, 0, 1, 1, 1},
+		{1, 0, 1, 1, 1},
+		{0, 2, 1, 1, 1},
 	}
 
 	return psol, expectedSolvedBoard
@@ -143,17 +143,17 @@ func TestVfPartialSolution(t *testing.T) {
 		}
 
 		So(unsolvedPositions, ShouldNotBeEmpty)
-		So(unsolvedPositions, ShouldContain, VfBoardPosition{0,0})
-		So(unsolvedPositions, ShouldContain, VfBoardPosition{4,0})
-		So(unsolvedPositions, ShouldNotContain, VfBoardPosition{4,4})
-		So(unsolvedPositions, ShouldContain, VfBoardPosition{3,1})
+		So(unsolvedPositions, ShouldContain, VfBoardPosition{0, 0})
+		So(unsolvedPositions, ShouldContain, VfBoardPosition{4, 0})
+		So(unsolvedPositions, ShouldNotContain, VfBoardPosition{4, 4})
+		So(unsolvedPositions, ShouldContain, VfBoardPosition{3, 1})
 
 		_, psol2 := psol.UpdatedPartialSolution(VfBoardPosition{3, 1}, NewSolvedVfPSolTile(0))
 		var unsolvedPositions2 []VfBoardPosition
 		for k := range psol2.UnsolvedTiles() {
 			unsolvedPositions2 = append(unsolvedPositions2, k)
 		}
-		So(unsolvedPositions2, ShouldNotContain, VfBoardPosition{3,1})
+		So(unsolvedPositions2, ShouldNotContain, VfBoardPosition{3, 1})
 
 		So(psol2.IsPossible(), ShouldBeTrue)
 		So(psol2.IsSolved(), ShouldBeFalse)

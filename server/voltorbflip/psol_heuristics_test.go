@@ -1,8 +1,8 @@
 package voltorbflip
 
 import (
-	"testing"
 	. "github.com/smartystreets/goconvey/convey"
+	"testing"
 )
 
 func NewSolvedRow() (vfPSolLineData, [5]VfPSolTile) {

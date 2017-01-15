@@ -1,11 +1,11 @@
 package main
 
 import (
-	"time"
 	"encoding/json"
 	"io/ioutil"
 	"net/http"
 	"path/filepath"
+	"time"
 
 	"goji.io"
 	"goji.io/pat"
@@ -42,11 +42,11 @@ func (_ SolveApiHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	isPossible, isWon, tiles, safestPosition, safety := voltorbflip.Solve(&request.BoardTotals, request.Tiles)
 
 	apiResponse := SolveApiResponse{
-		IsPossible: isPossible,
-		IsWon: isWon,
-		Tiles: tiles,
+		IsPossible:     isPossible,
+		IsWon:          isWon,
+		Tiles:          tiles,
 		SafestPosition: safestPosition,
-		Safety: safety}
+		Safety:         safety}
 	b, _ := json.Marshal(apiResponse)
 
 	w.Write(b)
@@ -67,9 +67,9 @@ func main() {
 	mux.Handle(pat.Get("/*"), http.FileServer(http.Dir(staticContentPath)))
 
 	server := &graceful.Server{
-		Addr: ":8080",
-		Handler: mux,
-		ReadTimeout: time.Second * 5,
+		Addr:         ":8080",
+		Handler:      mux,
+		ReadTimeout:  time.Second * 5,
 		WriteTimeout: time.Second * 15,
 	}
 	server.ListenAndServe()
