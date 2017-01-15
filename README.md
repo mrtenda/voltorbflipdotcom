@@ -1,4 +1,4 @@
-## [VoltorbFlip.Com](http://voltorbflip.com)
+## [VoltorbFlip.com](http://voltorbflip.com)
 
 ![Voltorb Flip Screenshot](https://cloud.githubusercontent.com/assets/1281326/21961444/b72a3f76-dabe-11e6-8cdc-91fac816452c.png)
 
