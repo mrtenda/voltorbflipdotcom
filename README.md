@@ -23,7 +23,7 @@ To just use the solver, go to http://voltorbflip.com. To run it locally, generat
 
 ```
 cd jekyll-site
-jekyll b
+bundler exec jekyll b
 cd ..
 docker build -t voltorbflipdotcom .
 docker run -d -p 8080:8080 voltorbflipdotcom

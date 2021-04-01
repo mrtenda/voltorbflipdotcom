@@ -1,6 +1,8 @@
 body {
   background-color: #31b068;
   font-family: sans-serif;
+  margin: 0;
+  padding: 0;
 }
 
 div#social-media {
@@ -183,7 +185,7 @@ table.prizes tr {
   background-color: #e4e9fd;
 }
 
-div.content a.blue {
+a.blue {
   background-image: url("https://s3.amazonaws.com/vflip/images/buttonbg.png");
   background-size: contain;
 
@@ -215,6 +217,10 @@ div.content a.blue {
 
   cursor: hand;
   cursor: pointer;
+}
+
+a.blue.bluelarge {
+  font-size: 2em;
 }
 
 /* Hack for Firefox */
@@ -409,4 +415,63 @@ table#board tr td div.voltorb {
   padding-top: 0;
   margin: 0;
   margin-left: 2px;
+}
+
+/* bottom area */
+
+.black-fade {
+  background-image: url("images/black_gradient.png");
+  background-repeat: repeat-x;
+  height: 64px;
+  width: 100%;
+}
+
+.black-area {
+  width: 100%;
+  background-color: black;
+  padding-bottom: 15px;
+}
+
+.black-area-container {
+  margin: 0 auto 0 auto;
+  text-align: center;
+  position: relative;
+}
+
+.black-area-content {
+  position: relative;
+
+  width: 600px;
+  padding-bottom: 1em;
+
+  display: inline-block;
+  margin: 0.5em auto 0.5em auto;
+
+  text-align: center;
+
+  color: white;
+}
+
+.black-area-content p {
+  line-height: 1.3em;
+}
+
+.black-area p {
+  font-size: 1.1em;
+}
+
+.embed-container {
+  position: relative;
+  padding-bottom: 56.25%;
+  height: 0;
+  overflow: hidden;
+  max-width: 100%;
+  border: 2px white solid;
+}
+.embed-container iframe, .embed-container object, .embed-container embed {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
 }

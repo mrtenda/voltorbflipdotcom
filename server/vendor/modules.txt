@@ -1,0 +1,39 @@
+# github.com/davecgh/go-spew v1.1.1
+## explicit
+github.com/davecgh/go-spew/spew
+# github.com/gopherjs/gopherjs v0.0.0-20210202160940-bed99a852dfe
+## explicit
+github.com/gopherjs/gopherjs/js
+# github.com/jtolds/gls v4.20.0+incompatible
+## explicit
+github.com/jtolds/gls
+# github.com/pmezard/go-difflib v1.0.0
+## explicit
+github.com/pmezard/go-difflib/difflib
+# github.com/smartystreets/assertions v1.2.0
+## explicit
+github.com/smartystreets/assertions
+github.com/smartystreets/assertions/internal/go-diff/diffmatchpatch
+github.com/smartystreets/assertions/internal/go-render/render
+github.com/smartystreets/assertions/internal/oglematchers
+# github.com/smartystreets/goconvey v1.6.2
+## explicit
+github.com/smartystreets/goconvey/convey
+github.com/smartystreets/goconvey/convey/gotest
+github.com/smartystreets/goconvey/convey/reporting
+# github.com/stretchr/testify v1.1.4
+## explicit
+github.com/stretchr/testify/assert
+# github.com/zenazn/goji v0.9.1-0.20160507202103-64eb34159fe5
+## explicit
+github.com/zenazn/goji/graceful
+github.com/zenazn/goji/graceful/listener
+# goji.io v1.0.0
+## explicit
+goji.io
+goji.io/internal
+goji.io/pat
+goji.io/pattern
+# golang.org/x/net v0.0.0-20210331212208-0fccb6fa2b5c
+## explicit
+golang.org/x/net/context
