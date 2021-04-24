@@ -93,7 +93,7 @@ func (psol vfPartialSolution) SafestUnsolvedPosition() (bool, bool, VfBoardPosit
 				return false, false, VfBoardPosition{}, 0
 			}
 			return psol.SafestUnsolvedPosition()
-		} else if safePossibilities > safestNumberOfPossibilities {
+		} else if (safePossibilities > safestNumberOfPossibilities) && psol.GetTile(position).IsPossiblyNecessaryToWin() {
 			safestPosition = position
 			safestNumberOfPossibilities = safePossibilities
 		}
