@@ -232,7 +232,7 @@ function ajaxSuccess(data) {
   updateBoardDisplay();
 
   if (data["IsWon"]) {
-    showMessage("win", "Game clear! You've found all the hidden <img src=\"https://s3.amazonaws.com/vflip/images/3.png\"> and <img src=\"https://s3.amazonaws.com/vflip/images/2.png\"> cards.");
+    showMessage("win", "Game clear! You've found all the hidden <img src=\"/assets/images/3.png\"> and <img src=\"/assets/images/2.png\"> cards.");
     return;
   }
 
@@ -284,7 +284,7 @@ function ajaxSuccess(data) {
     } else {
       safetyString = parseFloat(safety).toFixed(0);
     }
-    showMessage("warn", "What is this Card? There is a " + safetyString + "% chance it is a <img src=\"https://s3.amazonaws.com/vflip/images/volt.png\" />.");
+    showMessage("warn", "What is this Card? There is a " + safetyString + "% chance it is a <img src=\"/assets/images/volt.png\" />.");
   }
 }
 
