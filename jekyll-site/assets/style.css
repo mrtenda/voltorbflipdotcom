@@ -169,6 +169,10 @@ div.text div.spacing div.inner p {
   line-height: 1.2em;
 }
 
+div.text.console img {
+  vertical-align: -0.5em;
+}
+
 table.prizes {
   width: 90%;
   margin: 1em auto 1em auto;
