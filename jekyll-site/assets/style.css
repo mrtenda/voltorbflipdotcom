@@ -190,7 +190,7 @@ table.prizes tr {
 }
 
 a.blue {
-  background-image: url("images/buttonbg.png");
+  background-image: url("/assets/images/buttonbg.png");
   background-size: contain;
 
   color: #f8f8f8;
@@ -303,7 +303,7 @@ table#board tr td.known {
 }
 
 table#board tr td.unknown {
-  background-image: url("images/cellbg.png");
+  background-image: url("/assets/images/cellbg.png");
   background-size: cover;
   background-position: center;
   border: 2px solid #173025;
@@ -313,7 +313,7 @@ table#board tr td.voltorb {
   background-color: #b88880;
   border: 2px solid #173025;
 
-  background-image:url('images/voltorb-hit.png');
+  background-image:url('/assets/images/voltorb-hit.png');
   background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
@@ -353,19 +353,19 @@ table#board tr td.ask table td {
 }
 
 table#board tr td.ask a.three {
-  background-image: url("images/3.png");
+  background-image: url("/assets/images/3.png");
 }
 
 table#board tr td.ask a.two {
-  background-image: url("images/2.png");
+  background-image: url("/assets/images/2.png");
 } 
 
 table#board tr td.ask a.one {
-  background-image: url("images/1.png");
+  background-image: url("/assets/images/1.png");
 } 
 
 table#board tr td.ask a.volt {
-  background-image: url("images/volt.png");
+  background-image: url("/assets/images/volt.png");
 }
 
 table#board tr td.ask a div.buttonoff {
@@ -412,7 +412,7 @@ table#board tr td div.whitesep {
 }
 
 table#board tr td div.voltorb {
-  background-image:url('images/voltorb.png');
+  background-image:url('/assets/images/voltorb.png');
   background-position: left center;
   background-repeat: no-repeat;
   padding-left: 15px;
@@ -424,7 +424,7 @@ table#board tr td div.voltorb {
 /* bottom area */
 
 .black-fade {
-  background-image: url("images/black_gradient.png");
+  background-image: url("/assets/images/black_gradient.png");
   background-repeat: repeat-x;
   height: 64px;
   width: 100%;
