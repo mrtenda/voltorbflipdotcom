@@ -2,3 +2,4 @@
 /*.iml
 *.swp
 .DS_store
+.jekyll-cache
