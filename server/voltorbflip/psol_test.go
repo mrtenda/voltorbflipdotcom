@@ -67,10 +67,20 @@ func NewSolvedPsol() (vfPartialSolution, VfSolvedBoard) {
 	return psol, expectedSolvedBoard
 }
 
-func NewImpossiblePsol() vfPartialSolution {
+func NewImpossiblePsol1() vfPartialSolution {
 	board := VfBoardTotals{
 		RowTotals:    [5]VfLineTotal{{7, 9}, {5, 2}, {4, 1}, {4, 1}, {5, 1}},
 		ColumnTotals: [5]VfLineTotal{{5, 2}, {7, 2}, {5, 0}, {5, 0}, {3, 2}},
+	}
+	_, psol := newVfPartialSolution(&board, NewBlankVfPSolBoard())
+
+	return psol
+}
+
+func NewImpossiblePsol2() vfPartialSolution {
+	board := VfBoardTotals{
+		RowTotals:    [5]VfLineTotal{{3, 2}, {4, 1}, {3, 2}, {6, 1}, {8, 0}},
+		ColumnTotals: [5]VfLineTotal{{5, 1}, {4, 1}, {4, 2}, {6, 1}, {4, 1}},
 	}
 	_, psol := newVfPartialSolution(&board, NewBlankVfPSolBoard())
 
@@ -122,13 +132,21 @@ func TestVfPartialSolution(t *testing.T) {
 		}
 	})
 
-	Convey("Given an impossible psol", t, func() {
-		psol := NewImpossiblePsol()
+	Convey("Given an impossible psol 1", t, func() {
+		psol := NewImpossiblePsol1()
 
 		So(psol.IsPossible(), ShouldBeFalse)
 		So(psol.IsSolved(), ShouldBeFalse)
 		So(func() { psol.SolvedBoard() }, ShouldPanic)
 	})
+
+    Convey("Given an impossible psol 2", t, func() {
+        psol := NewImpossiblePsol2()
+
+        So(psol.IsPossible(), ShouldBeFalse)
+        So(psol.IsSolved(), ShouldBeFalse)
+        So(func() { psol.SolvedBoard() }, ShouldPanic)
+    })
 
 	Convey("Given an unsolved psol", t, func() {
 		psol := NewUnsolvedPsol()

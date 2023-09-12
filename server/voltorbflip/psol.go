@@ -148,7 +148,7 @@ func newVfPartialSolution(board *VfBoardTotals, psolBoard VfPSolBoard) (bool, vf
 	result.updateAllRowData()
 	result.updateAllColumnData()
 
-	isPossible := result.applyHeuristics()
+    isPossible := result.IsPossible() && result.applyHeuristics()
 
 	return isPossible, result
 }
@@ -183,6 +183,20 @@ func (psol vfPartialSolution) IsWon() bool {
 }
 
 func (psol vfPartialSolution) IsPossible() bool {
+    p_total := 0
+    v_total := 0
+	for _, v := range psol.board.RowTotals {
+	    p_total += v.Points
+	    v_total += v.Voltorbs
+	}
+    for _, v := range psol.board.ColumnTotals {
+        p_total -= v.Points
+        v_total -= v.Voltorbs
+    }
+    if ((p_total != 0) || (v_total != 0)) {
+        return false
+    }
+
 	for _, rowData := range psol.rowData {
 		if (rowData.RemainingVoltorbs > rowData.NumUnsolvedTiles) ||
 			(rowData.RemainingVoltorbs < 0) ||
