@@ -65,7 +65,7 @@ func (psol vfPartialSolution) SafetyOfEachGuess() (map[VfBoardPosition]int, int)
 	return result, numberOfPossibilities
 }
 
-func (psol vfPartialSolution) SafestUnsolvedPosition() (bool, bool, VfBoardPosition, float32) {
+func (psol *vfPartialSolution) SafestUnsolvedPosition() (bool, bool, VfBoardPosition, float32) {
 	if psol.IsWon() {
 		return true, true, VfBoardPosition{}, 0
 	}

@@ -172,11 +172,9 @@ func (psol vfPartialSolution) IsSolved() bool {
 func (psol vfPartialSolution) IsWon() bool {
 	for y := 0; y < 5; y++ {
 		for x := 0; x < 5; x++ {
-			for i := 0; i < 4; i++ {
-				if !psol.tiles[y][x].IsSolved() && psol.tiles[y][x].IsPossiblyNecessaryToWin() {
-					return false
-				}
-			}
+            if !psol.tiles[y][x].IsSolved() && psol.tiles[y][x].IsPossiblyNecessaryToWin() {
+                return false
+            }
 		}
 	}
 	return true

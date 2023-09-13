@@ -4,6 +4,7 @@ import (
 	. "github.com/smartystreets/goconvey/convey"
 	"github.com/stretchr/testify/assert"
 	"testing"
+	"fmt"
 )
 
 func TestVfPSolTile_IsSolved(t *testing.T) {
@@ -118,6 +119,50 @@ func NewPartiallySolvedPsol() vfPartialSolution {
 	return psol
 }
 
+func NewPartiallySolvedPsolIssue6() (bool, vfPartialSolution) {
+	boardTotals := VfBoardTotals{
+		RowTotals:    [5]VfLineTotal{{7, 1}, {6, 0}, {3, 3}, {7, 2}, {3, 2}},
+		ColumnTotals: [5]VfLineTotal{{5, 2}, {2, 3}, {7, 1}, {6, 2}, {6, 0}},
+	}
+
+	partiallySolvedBoard := [5][5]VfPSolTile{
+        [5]VfPSolTile{
+            VfPSolTile{true, true, true, true},
+            VfPSolTile{true, true, false, false},
+            NewSolvedVfPSolTile(3),
+            VfPSolTile{true, false, true, true},
+            NewSolvedVfPSolTile(1)},
+        [5]VfPSolTile{
+            NewSolvedVfPSolTile(1),
+            NewSolvedVfPSolTile(1),
+            NewSolvedVfPSolTile(1),
+            NewSolvedVfPSolTile(1),
+            NewSolvedVfPSolTile(2)},
+        [5]VfPSolTile{
+            VfPSolTile{true, false, true, false},
+            NewSolvedVfPSolTile(0),
+            VfPSolTile{true, false, true, false},
+            VfPSolTile{true, false, true, false},
+            NewSolvedVfPSolTile(1)},
+        [5]VfPSolTile{
+            VfPSolTile{true, false, true, true},
+            NewSolvedVfPSolTile(0),
+            VfPSolTile{true, false, true, true},
+            VfPSolTile{true, false, true, true},
+            NewSolvedVfPSolTile(1)},
+        [5]VfPSolTile{
+            VfPSolTile{true, true, false, false},
+            VfPSolTile{true, true, false, false},
+            VfPSolTile{true, true, false, false},
+            NewSolvedVfPSolTile(0),
+            NewSolvedVfPSolTile(1)},
+    }
+
+    is_possible, psol := newVfPartialSolution(&boardTotals, partiallySolvedBoard)
+
+	return is_possible, psol
+}
+
 func TestVfPartialSolution(t *testing.T) {
 	Convey("Given a solved psol", t, func() {
 		psol, expectedSolvedBoard := NewSolvedPsol()
@@ -214,5 +259,24 @@ func TestVfPartialSolution_UpdateColumnData(t *testing.T) {
 		psol.invertedTiles[0][3].SetPoints(0)
 		psol.updateColumnData(0)
 		So(psol.columnData[0] == vfPSolLineData{0, 1, 1}, ShouldBeTrue)
+	})
+}
+
+func TestVfPartialSolution_Issue6(t *testing.T) {
+	Convey("Given a partially solved psol (issue #6)", t, func() {
+		_, psol := NewPartiallySolvedPsolIssue6()
+
+        //fmt.Printf(psol.String())
+
+		So(is_possible, ShouldBeTrue)
+        //So(psol.IsWon(), ShouldBeFalse)
+
+        //fmt.Printf("- bfore psol.SUP: %s\n", psol.String())
+        isPossible, isWon, _, _ := psol.SafestUnsolvedPosition()
+
+        //fmt.Printf("- after psol.SUP: %s\n", psol.String())
+
+        So(isPossible, ShouldBeTrue)
+        //So(isWon, ShouldBeFalse)
 	})
 }
