@@ -110,6 +110,24 @@ layout: default
       reset();
     });
 
+    for (var y = 0; y < 5; y++) {
+        for (var x = 0; x < 5; x++) {
+
+            (function(x, y) {
+                $(("#card"+x)+y).click(function(event) {
+            
+                    if (!isCurrentlyGuessing || !$(this).hasClass('unknown')) {
+                        return;
+                    }
+                    event.preventDefault();
+                    makeCardGuessable(x, y, 0.5);
+            
+                });
+            })(x, y);
+
+        }
+    }
+
     reset();
   });
 </script>

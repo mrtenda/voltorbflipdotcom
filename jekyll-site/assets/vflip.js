@@ -1,7 +1,16 @@
-var guessX = -1;
-var guessY = -1;
 var board = [];
 var boardSize = -1;
+var isCurrentlyGuessing = false;
+
+var MESSAGE_WELCOME = "Welcome! Please input the Point and Voltorb totals.";
+var MESSAGE_LOADING = "Solving...";
+var MESSAGE_ASK_SUFFIX_CLICK_ANY_OTHER_CARD = " (Or click any other Card!)"
+var MESSAGE_ASK_SAFE = "What is this Card?" + MESSAGE_ASK_SUFFIX_CLICK_ANY_OTHER_CARD;
+var MESSAGE_ASK_UNSAFE = "What is this Card? $% chance it's a <img src=\"/assets/images/volt.png\" />." + MESSAGE_ASK_SUFFIX_CLICK_ANY_OTHER_CARD
+var MESSAGE_WIN = "Game clear! You've found all the hidden <img src=\"/assets/images/3.png\"> and <img src=\"/assets/images/2.png\"> cards.";
+var MESSAGE_ERROR_IMPOSSIBLE_BOARD = "This board is not possible. Please check your input.";
+var MESSAGE_ERROR_TIMEOUT = "This board is too complex for me to solve. Sorry. :(";
+var MESSAGE_ERROR_UNKNOWN = "An error occurred.";
 
 function isNumber(n) {
   return !isNaN(parseInt(n)) && isFinite(n);
@@ -174,57 +183,112 @@ function updateCellDisplay(i, j) {
   }
 }
 
-function createAskLink(c, enabled, f) {
+function createAskLink(c, enabled, f, x, y) {
   a = $(document.createElement("a"))
     .attr("href", "#")
     .addClass(c)
-    .click(f);
+    .click(function(event) {
+      // Call the provided function f with the captured x and y values
+      f(event, x, y);
+    });
   if (!enabled)
     a.append($(document.createElement("div")).addClass("buttonoff"));
   return a;
 }
 
-function guess3(event) {
+function guess3(event, x, y) {
   event.preventDefault();
-  board[guessY][guessX] = [false, false, false, true];
+  board[y][x] = [false, false, false, true];
   ajaxSolve();
 }
 
-function guess2(event) {
+function guess2(event, x, y) {
   event.preventDefault();
-  board[guessY][guessX] = [false, false, true, false];
+  board[y][x] = [false, false, true, false];
   ajaxSolve();
 }
 
-function guess1(event) {
+function guess1(event, x, y) {
   event.preventDefault();
-  board[guessY][guessX] = [false, true, false, false];
+  board[y][x] = [false, true, false, false];
   ajaxSolve();
 }
 
-function guessV(event) {
+function guessV(event, x, y) {
   event.preventDefault();
-  board[guessY][guessX] = [true, false, false, false];
+  board[y][x] = [true, false, false, false];
   updateBoardDisplay();
+  isCurrentlyGuessing = false;
   showMessage("lose", "Oh no! You get 0 Coins!");
 }
 
 function ajaxError(x, t, m) {
   if (t == "timeout") {
-    showMessage("error", "This board is too complex for me to solve. Sorry. :(");
+    showMessage("error", MESSAGE_ERROR_TIMEOUT);
   } else {
-    showMessage("error", "An error occurred.");
+    showMessage("error", MESSAGE_ERROR_UNKNOWN);
   }
+}
+
+function makeCardGuessable(guessX, guessY, safety) {
+    isCurrentlyGuessing = true;
+
+    $(("#card"+guessX)+guessY).removeClass("unknown");
+    $(("#card"+guessX)+guessY).addClass("ask");
+    $(("#card"+guessX)+guessY).html("");
+    var row1 = $(document.createElement("tr"));
+    var cell1 = $(document.createElement("td"));
+    cell1.append(
+        createAskLink(
+            "three",
+            board[guessY][guessX][3],
+            guess3,
+            guessX,
+            guessY));
+    row1.append(cell1);
+    var cell2 = $(document.createElement("td"));
+    cell2.append(
+        createAskLink(
+            "two",
+            board[guessY][guessX][2],
+            guess2,
+            guessX,
+            guessY));
+    row1.append(cell2);
+    var row2 = $(document.createElement("tr"));
+    var cell1a = $(document.createElement("td"));
+    cell1a.append(
+        createAskLink(
+            "one",
+            board[guessY][guessX][1],
+            guess1,
+            guessX,
+            guessY));
+    row2.append(cell1a);
+
+    var cell2a = $(document.createElement("td"));
+    cell2a.append(
+        createAskLink(
+            "volt",
+            board[guessY][guessX][0] && (safety < 1),
+            guessV,
+            guessX,
+            guessY));
+    row2.append(cell2a);
+    var tbl = $(document.createElement("table"));
+    tbl.append(row1);
+    tbl.append(row2);
+    $(("#card"+guessX)+guessY).append(tbl);
 }
 
 function ajaxSuccess(data) {
   if (!data) {
-    showMessage("error", "An error occurred.");
+    showMessage("error", MESSAGE_ERROR_UNKNOWN);
     return;
   }
 
   if (!data["IsPossible"]) {
-    showMessage("error", "This board is not possible. Please check your input.");
+    showMessage("error", MESSAGE_ERROR_IMPOSSIBLE_BOARD);
     return;
   }
 
@@ -232,51 +296,18 @@ function ajaxSuccess(data) {
   updateBoardDisplay();
 
   if (data["IsWon"]) {
-    showMessage("win", "Game clear! You've found all the hidden <img src=\"/assets/images/3.png\"> and <img src=\"/assets/images/2.png\"> cards.");
+    showMessage("win", MESSAGE_WIN);
     return;
   }
 
-  guessX = parseInt(data["SafestPosition"]["X"]);
-  guessY = parseInt(data["SafestPosition"]["Y"]);
-  $(("#card"+guessX)+guessY).removeClass("unknown");
-  $(("#card"+guessX)+guessY).addClass("ask");
-  $(("#card"+guessX)+guessY).html("");
-  var row1 = $(document.createElement("tr"));
-  var cell1 = $(document.createElement("td"));
-  cell1.append(
-      createAskLink("three",
-	board[guessY][guessX][3],
-	guess3));
-  row1.append(cell1);
-  var cell2 = $(document.createElement("td"));
-  cell2.append(
-      createAskLink("two",
-        board[guessY][guessX][2],
-	guess2));
-  row1.append(cell2);
-  var row2 = $(document.createElement("tr"));
-  var cell1a = $(document.createElement("td"));
-  cell1a.append(
-      createAskLink("one",
-        board[guessY][guessX][1],
-        guess1));
-  row2.append(cell1a)
+  var guessX = parseInt(data["SafestPosition"]["X"]);
+  var guessY = parseInt(data["SafestPosition"]["Y"]);
+  var safety = parseFloat(data["Safety"]);
 
-  safety = parseFloat(data["Safety"]);
-
-  var cell2a = $(document.createElement("td"));
-  cell2a.append(
-      createAskLink("volt",
-        board[guessY][guessX][0] && (safety < 1),
-        guessV));
-  row2.append(cell2a);
-  var tbl = $(document.createElement("table"));
-  tbl.append(row1);
-  tbl.append(row2);
-  $(("#card"+guessX)+guessY).append(tbl);
+  makeCardGuessable(guessX, guessY, safety);
 
   if (safety >= 1)
-    showMessage("win", "What is this Card?");
+    showMessage("win", MESSAGE_ASK_SAFE);
   else {
     safety = (1-safety)*100;
     if (safety < 1) {
@@ -284,12 +315,12 @@ function ajaxSuccess(data) {
     } else {
       safetyString = parseFloat(safety).toFixed(0);
     }
-    showMessage("warn", "What is this Card? There is a " + safetyString + "% chance it is a <img src=\"/assets/images/volt.png\" />.");
+    showMessage("warn", MESSAGE_ASK_UNSAFE.replace("$", safetyString));
   }
 }
 
 function reset() {
-  showMessage("win", "Welcome! Please input the Point and Voltorb totals.");
+  showMessage("win", MESSAGE_WELCOME);
   resetBoard();
 
   for (var i = 0; i < boardSize; i++) {
@@ -307,10 +338,14 @@ function reset() {
 
   setInputsReadonly(false);
 
+  isCurrentlyGuessing = false;
+
   $("#solve").css("visibility", "visible");
 }
 
 function ajaxSolve(query) {
+  isCurrentlyGuessing = false;
+
   var query = {};
   var invalidInput = false;
 
@@ -352,7 +387,7 @@ function ajaxSolve(query) {
   if (!invalidInput) {
     setInputsReadonly(true);
 
-    showMessage("win", "Solving...");
+    showMessage("win", MESSAGE_LOADING);
 
     var query = {
       BoardTotals: {
@@ -393,7 +428,7 @@ function pointVal(x) {
 
 function ajaxGetRandomBoardSuccess(data) {
   if (!data) {
-    showMessage("lose", "An error occurred.");
+    showMessage("lose", MESSAGE_ERROR_UNKNOWN);
     return;
   }
   // Display the row/column point/voltorb totals
@@ -447,58 +482,4 @@ function ajaxGetRandomBoard(level) {
     success: ajaxGetRandomBoardSuccess,
     dataType: "json"
   });
-}
-
-// Play functions
-var playEnabled = true; // Set when the player has not lost yet
-var numValuedCards = 0;
-
-function updateValuedCardsCount() {
-  numValuedCards = 0;
-  for (var i = 0; i < boardSize; i++) {
-    for (var j = 0; j < boardSize; j++) {
-      if (pointVal(board[i][j]) > 1)
-	numValuedCards++;
-    }
-  }
-}
-
-function playNewGame() {
-  playEnabled = false;
-  resetBoard();
-  updateBoardDisplay();
-  ajaxGetRandomBoard(1);
-  updateValuedCardsCount();
-  showMessage("win", "Flip the cards and collect coins!");
-}
-
-function playWin() {
-  if (playEnabled) {
-    showMessage("win", "You win!");
-    updateBoardDisplay();
-    playEnabled = false;
-  }
-}
-
-function playGuess(x, y) {
-  if (playEnabled) {
-    updateCellDisplay(y, x);
-    if (isVoltorb(board[y][x])) {
-      playReveal(boardSize);
-      showMessage("lose", "Oh no! You get 0 Coins!");
-    } else if (pointVal(board[y][x]) > 1) {
-      numValuedCards--;
-      if (numValuedCards <= 0) {
-	playWin();
-      }
-    }
-  }
-}
-
-function playReveal() {
-  if (playEnabled) {
-    showMessage("lose", "Game Over!");
-    updateBoardDisplay();
-    playEnabled = false;
-  }
 }
