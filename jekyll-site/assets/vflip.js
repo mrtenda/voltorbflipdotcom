@@ -1,6 +1,6 @@
 var board = [];
 var boardSize = -1;
-var isCurrentlyGuessing = false;
+var canClickOnUnknownTileToGuess = false;
 
 var MESSAGE_WELCOME = "Welcome! Please input the Point and Voltorb totals.";
 var MESSAGE_LOADING = "Solving...";
@@ -8,6 +8,7 @@ var MESSAGE_ASK_SUFFIX_CLICK_ANY_OTHER_CARD = " (Or click any other Card!)"
 var MESSAGE_ASK_SAFE = "What is this Card?" + MESSAGE_ASK_SUFFIX_CLICK_ANY_OTHER_CARD;
 var MESSAGE_ASK_UNSAFE = "What is this Card? $% chance it's a <img src=\"/assets/images/volt.png\" />." + MESSAGE_ASK_SUFFIX_CLICK_ANY_OTHER_CARD
 var MESSAGE_WIN = "Game clear! You've found all the hidden <img src=\"/assets/images/3.png\"> and <img src=\"/assets/images/2.png\"> cards.";
+var MESSAGE_LOSE = "You lose! (Or click on any un-flipped Card to keep going.)"
 var MESSAGE_ERROR_IMPOSSIBLE_BOARD = "This board is not possible. Please check your input.";
 var MESSAGE_ERROR_TIMEOUT = "This board is too complex for me to solve. Sorry. :(";
 var MESSAGE_ERROR_UNKNOWN = "An error occurred.";
@@ -218,8 +219,8 @@ function guessV(event, x, y) {
   event.preventDefault();
   board[y][x] = [true, false, false, false];
   updateBoardDisplay();
-  isCurrentlyGuessing = false;
-  showMessage("lose", "Oh no! You get 0 Coins!");
+  canClickOnUnknownTileToGuess = true;
+  showMessage("lose", MESSAGE_LOSE);
 }
 
 function ajaxError(x, t, m) {
@@ -231,7 +232,7 @@ function ajaxError(x, t, m) {
 }
 
 function makeCardGuessable(guessX, guessY, safety) {
-    isCurrentlyGuessing = true;
+    canClickOnUnknownTileToGuess = true;
 
     $(("#card"+guessX)+guessY).removeClass("unknown");
     $(("#card"+guessX)+guessY).addClass("ask");
@@ -338,13 +339,13 @@ function reset() {
 
   setInputsReadonly(false);
 
-  isCurrentlyGuessing = false;
+  canClickOnUnknownTileToGuess = false;
 
   $("#solve").css("visibility", "visible");
 }
 
 function ajaxSolve(query) {
-  isCurrentlyGuessing = false;
+  canClickOnUnknownTileToGuess = false;
 
   var query = {};
   var invalidInput = false;

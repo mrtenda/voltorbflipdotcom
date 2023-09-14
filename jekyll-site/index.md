@@ -116,11 +116,11 @@ layout: default
             (function(x, y) {
                 $(("#card"+x)+y).click(function(event) {
             
-                    if (!isCurrentlyGuessing || !$(this).hasClass('unknown')) {
+                    if (canClickOnUnknownTileToGuess && $(this).hasClass('unknown')) {
+                        event.preventDefault();
+                        makeCardGuessable(x, y, 0.5);
                         return;
                     }
-                    event.preventDefault();
-                    makeCardGuessable(x, y, 0.5);
             
                 });
             })(x, y);
