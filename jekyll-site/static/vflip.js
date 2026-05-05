@@ -403,7 +403,7 @@ function ajaxSolve(query) {
       contentType:"application/json",
       dataType: "json",
       data: JSON.stringify(query),
-      timeout: 15000,
+      timeout: 30000,
       success: ajaxSuccess,
       error: ajaxError
     });

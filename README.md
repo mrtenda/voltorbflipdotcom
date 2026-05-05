@@ -1,4 +1,4 @@
-## [VoltorbFlip.com](http://voltorbflip.com)
+## [VoltorbFlip.com](https://voltorbflip.com)
 
 ![Voltorb Flip Screenshot](https://cloud.githubusercontent.com/assets/1281326/21961444/b72a3f76-dabe-11e6-8cdc-91fac816452c.png)
 
@@ -17,16 +17,21 @@ Given a board as input, which includes the row/column totals as well as any flip
 5. Prompt the user to flip the safest card found in the previous step.
 6. Repeat until the user either finds all of the 2 and 3 cards (which means they won) or the user finds a Voltorb (which means they lost).
 
-### How to Run
+### How to Deploy (AWS Serverless)
 
-To just use the solver, go to http://voltorbflip.com. To run it locally, generate the static HTML portion of the site and then use the provided Dockerfile:
+#### Prerequisites
+- AWS CLI configured with credentials.
+- Node.js & npm.
+- Docker (mandatory for the build process).
 
+#### Deployment
+```powershell
+cd infra
+npx cdk deploy
 ```
-cd jekyll-site
-bundler exec jekyll b
-cd ..
-docker build -t voltorbflipdotcom .
-docker run -d -p 8080:8080 voltorbflipdotcom
-```
 
-After completing the steps above, the solver should be accessible through the URL [http://localhost:8080](http://localhost:8080).
+#### Environment Configuration
+The stack is configured to deploy to **us-east-1** (N. Virginia) to support CloudFront SSL certificates and Route 53 lookups. To change the target account or region, update the `env` block in `infra/bin/infra.ts`.
+
+### Local Development (Legacy Docker)
+You can still build and run the project locally using the provided Dockerfile. Note that the backend has been updated to be Lambda-compatible, so you may need to use a Lambda emulator (like AWS SAM or LocalStack) for full local testing of the API.

@@ -1,22 +1,13 @@
 package main
 
 import (
+	"context"
 	"encoding/json"
-	"io/ioutil"
 	"net/http"
-	"path/filepath"
-	"time"
 
-	"goji.io"
-	"goji.io/pat"
-
+	"github.com/aws/aws-lambda-go/events"
+	"github.com/aws/aws-lambda-go/lambda"
 	"github.com/mrtenda/voltorbflipdotcom/server/voltorbflip"
-	"github.com/zenazn/goji/graceful"
-	"os"
-)
-
-const (
-	staticContentPathKey = "VFLIP_STATIC_CONTENT_PATH"
 )
 
 type SolveApiRequest struct {
@@ -32,45 +23,38 @@ type SolveApiResponse struct {
 	Safety         float32
 }
 
-type SolveApiHandler struct{}
+func HandleRequest(ctx context.Context, request events.APIGatewayV2HTTPRequest) (events.APIGatewayV2HTTPResponse, error) {
+	// Only handle POST to /api/solve (or any path routed here)
+	var solveReq SolveApiRequest
+	err := json.Unmarshal([]byte(request.Body), &solveReq)
+	if err != nil {
+		return events.APIGatewayV2HTTPResponse{
+			StatusCode: http.StatusBadRequest,
+			Body:       "Invalid JSON request body",
+		}, nil
+	}
 
-func (_ SolveApiHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	var request SolveApiRequest
-	requestBytes, _ := ioutil.ReadAll(r.Body)
-	json.Unmarshal(requestBytes, &request)
-
-	isPossible, isWon, tiles, safestPosition, safety := voltorbflip.Solve(&request.BoardTotals, request.Tiles)
+	isPossible, isWon, tiles, safestPosition, safety := voltorbflip.Solve(&solveReq.BoardTotals, solveReq.Tiles)
 
 	apiResponse := SolveApiResponse{
 		IsPossible:     isPossible,
 		IsWon:          isWon,
 		Tiles:          tiles,
 		SafestPosition: safestPosition,
-		Safety:         safety}
-	b, _ := json.Marshal(apiResponse)
+		Safety:         safety,
+	}
 
-	w.Write(b)
+	responseBytes, _ := json.Marshal(apiResponse)
+
+	return events.APIGatewayV2HTTPResponse{
+		StatusCode: http.StatusOK,
+		Body:       string(responseBytes),
+		Headers: map[string]string{
+			"Content-Type": "application/json",
+		},
+	}, nil
 }
 
 func main() {
-	mux := goji.NewMux()
-
-	mux.Handle(pat.Post("/api/solve"), http.TimeoutHandler(SolveApiHandler{}, 15*time.Second, "timed out"))
-
-	var staticContentPath string
-	if os.Getenv(staticContentPathKey) == "" {
-		staticContentPath, _ = filepath.Abs("./jekyll-site/_site")
-	} else {
-		staticContentPath, _ = filepath.Abs(os.Getenv(staticContentPathKey))
-	}
-
-	mux.Handle(pat.Get("/*"), http.FileServer(http.Dir(staticContentPath)))
-
-	server := &graceful.Server{
-		Addr:         ":8080",
-		Handler:      mux,
-		ReadTimeout:  time.Second * 5,
-		WriteTimeout: time.Second * 15,
-	}
-	server.ListenAndServe()
+	lambda.Start(HandleRequest)
 }

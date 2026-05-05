@@ -4,3 +4,6 @@
 .DS_store
 .jekyll-cache
 Gemfile.lock
+vendor/
+node_modules/
+infra/cdk.out/
