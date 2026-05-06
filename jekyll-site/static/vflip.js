@@ -2,15 +2,15 @@ var board = [];
 var boardSize = -1;
 var canClickOnUnknownTileToGuess = false;
 
-var MESSAGE_WELCOME = "Welcome! Please input the Point and Voltorb totals.";
+var MESSAGE_WELCOME = "👋 Please input the Point and Voltorb totals.";
 var MESSAGE_LOADING = "Solving...";
-var MESSAGE_ASK_SUFFIX_CLICK_ANY_OTHER_CARD = " (Or click any other Card!)"
+var MESSAGE_ASK_SUFFIX_CLICK_ANY_OTHER_CARD = "<br> (Or click any other Card!)"
 var MESSAGE_ASK_SAFE = "What is this Card?" + MESSAGE_ASK_SUFFIX_CLICK_ANY_OTHER_CARD;
 var MESSAGE_ASK_UNSAFE = "What is this Card? $% chance it's a <img src=\"/static/images/volt.png\" />." + MESSAGE_ASK_SUFFIX_CLICK_ANY_OTHER_CARD
-var MESSAGE_WIN = "Game clear! You've found all the hidden <img src=\"/static/images/3.png\"> and <img src=\"/static/images/2.png\"> cards.";
-var MESSAGE_LOSE = "You lose! (Or click on any un-flipped Card to keep going.)"
-var MESSAGE_ERROR_IMPOSSIBLE_BOARD = "This board is not possible. Please check your input.";
-var MESSAGE_ERROR_TIMEOUT = "This board is too complex for me to solve. Sorry. :(";
+var MESSAGE_WIN = "Game clear!<br>You found every <img src=\"/static/images/3.png\"> and <img src=\"/static/images/2.png\">.";
+var MESSAGE_LOSE = "You lose!<br>(Or click on any un-flipped Card to keep going.)"
+var MESSAGE_ERROR_IMPOSSIBLE_BOARD = "This board is not possible.<br>Please check your input.";
+var MESSAGE_ERROR_TIMEOUT = "This board is too complex to solve. Sorry. :(";
 var MESSAGE_ERROR_UNKNOWN = "An error occurred.";
 
 function isNumber(n) {
@@ -484,3 +484,25 @@ function ajaxGetRandomBoard(level) {
     dataType: "json"
   });
 }
+
+var INPUT_SEQUENCE = [
+  "r0p", "r0v", "r1p", "r1v", "r2p", "r2v", "r3p", "r3v", "r4p", "r4v",
+  "c0p", "c0v", "c1p", "c1v", "c2p", "c2v", "c3p", "c3v", "c4p", "c4v"
+];
+
+$(document).on('keypress', 'input', function(e) {
+  if (e.which == 13) { /* Enter key */
+    var currentId = $(this).attr('id');
+    var currentIndex = INPUT_SEQUENCE.indexOf(currentId);
+    
+    if (currentIndex !== -1 && currentIndex < INPUT_SEQUENCE.length - 1) {
+      e.preventDefault();
+      var nextId = INPUT_SEQUENCE[currentIndex + 1];
+      $("#" + nextId).focus().select();
+    } else if (currentIndex === INPUT_SEQUENCE.length - 1) {
+      /* If on last input, trigger solve */
+      e.preventDefault();
+      $("#solve").click();
+    }
+  }
+});

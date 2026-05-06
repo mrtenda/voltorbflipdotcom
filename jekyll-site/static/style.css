@@ -105,10 +105,14 @@ div.text div.spacing {
   width: 100%;
   margin: 0 auto 0 auto;
 
-  padding-top: 0.1em;
-  padding-bottom: 0.1em;
+  padding: 0.5em 1em;
+  line-height: 1.5em;
+  box-sizing: border-box;
 
-  line-height: 3em;
+  min-height: 4em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 div.text div.spacing.error {
@@ -154,6 +158,11 @@ div.text.console img {
   vertical-align: -0.5em;
 }
 
+.board-wrapper {
+  display: table;
+  margin: 0 auto;
+}
+
 a.blue {
   background-image: url("/static/images/buttonbg.png");
   background-size: contain;
@@ -168,8 +177,8 @@ a.blue {
   border-radius: 2px;
 
   padding: 2px 2em 2px 2em;
-  margin: 0;
-  margin-bottom: 0.5em;
+  margin: 0.5em 0;
+  width: 100%;
 
   vertical-align: baseline;
 
@@ -178,11 +187,11 @@ a.blue {
   font-size: 1em;
   cursor: default;
 
-  display: inline-block;
+  display: block;
   line-height: 2em;
-  -moz-box-sizing: content-box; /* or `border-box` */
-  -webkit-box-sizing: content-box;
-  box-sizing: content-box;
+  -moz-box-sizing: border-box; /* or `border-box` */
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
 
   cursor: hand;
   cursor: pointer;
@@ -201,16 +210,19 @@ button::-moz-focus-inner,
 
 table#board {
   border: 0;
-  padding: 0.2em;
   border-spacing: 0.5em;
-  margin-left: auto;
-  margin-right: auto;
+  margin: 0;
 }
 
 table#board td, table#board th {
   padding: 0;
   border-radius: 2px;
   color: transparent;
+}
+
+table#board td[id^="card"] {
+  width: 64px;
+  height: 64px;
 }
 
 table#board.play td {
@@ -291,30 +303,35 @@ table#board tr td.ask {
 }
 
 table#board tr td.ask a {
-  width: 28px;
-  height: 28px;
+  width: 100%;
+  height: 100%;
   border: 0;
   margin: 0;
   padding: 0;
-  display: table-cell;
+  display: block;
   background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
 }
 
 table#board tr td.ask table {
   border: 0;
   margin: 0;
-  padding: 0;
+  padding: 4px;
   width: 100%;
   height: 100%;
   margin-left: auto;
   margin-right: auto;
-  padding: 2px;
   border-spacing: 0;
+  box-sizing: border-box;
 }
 
 table#board tr td.ask table td {
-  width: 28px;
-  height: 28px;
+  width: 50%;
+  height: 50%;
+  padding: 0;
+  min-width: 0;
+  min-height: 0;
 }
 
 table#board tr td.ask a.three {
@@ -391,4 +408,76 @@ table#board tr td div.voltorb {
 table.legacy-table {
   line-height: 1 !important;
   border-collapse: separate;
+}
+
+@media (max-width: 600px) {
+  h1 {
+    font-size: 2em;
+  }
+
+  div.text {
+    width: 95%;
+    margin: 0.5em auto;
+  }
+
+  table#board {
+    border-spacing: 0.2em;
+    padding: 0;
+  }
+
+  table#board td {
+    width: 14vw;
+    height: 14vw;
+    max-width: 60px;
+    max-height: 60px;
+    min-width: 40px;
+    min-height: 40px;
+  }
+
+  table#board tr td.red, 
+  table#board tr td.grn, 
+  table#board tr td.yel, 
+  table#board tr td.blu, 
+  table#board tr td.pur {
+    font-size: 0.8em;
+  }
+
+  table#board tr td > input {
+    width: calc(100% - 4px);
+    box-sizing: border-box;
+    font-size: 16px; /* Prevents iOS auto-zoom */
+    margin: 2px;
+    padding: 0 2px;
+  }
+
+  table#board tr td div.voltorb {
+    padding-left: 14px;
+    background-size: 10px;
+    background-position: 2px center;
+    margin-left: 0;
+    box-sizing: border-box;
+    width: 100%;
+  }
+
+  table#board tr td div.voltorb input {
+    width: calc(100% - 2px);
+    box-sizing: border-box;
+    font-size: 16px;
+    margin: 2px 2px 2px 0;
+    padding: 0 2px;
+  }
+
+  table#board tr td.known {
+    font-size: 1.5em;
+  }
+
+  a.blue {
+    padding: 4px 1em;
+    font-size: 0.9em;
+    width: 100%;
+  }
+
+  .text-center {
+    margin-bottom: 0.5em;
+  }
 }
